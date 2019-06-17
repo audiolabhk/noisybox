@@ -14,13 +14,15 @@ class _GridViewerState extends State<GridViewer> {
   ];
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: images.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-      itemBuilder: (BuildContext context, index) {
-        return ListTile(title: images[index],);
-      },
+    return Hero(tag: 'HeroGrid',
+          child: GridView.builder(
+        itemCount: images.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
+        itemBuilder: (BuildContext context, index) {
+          return ListTile(title: images[index],);
+        },
+      ),
     );
   }
 }
