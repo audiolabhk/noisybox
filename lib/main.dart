@@ -1,4 +1,3 @@
-import 'package:featureful_finder/noisebox.dart';
 import 'package:featureful_finder/homebox.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +14,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: PageView(
-          controller: PageController(initialPage: 0),
-          children: <Widget>[Homebox(), Noisebox()],
-        ),
+        body: Homebox(),
       ),
     );
   }

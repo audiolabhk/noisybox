@@ -49,6 +49,7 @@ flutter:
   - lib/images/dog.png
   - lib/images/poop.png
   - lib/images/llama.png
+  - lib/images/animals_logo.png
 
   #  - images/a_dot_ham.jpeg
 

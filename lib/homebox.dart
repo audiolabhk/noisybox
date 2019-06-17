@@ -10,6 +10,11 @@ class Homebox extends StatefulWidget {
 
 class HomeboxState extends State<Homebox> {
   bool _firstState = true;
+  final _preTitle = [
+    "Here is a ",
+    "Weird, why would you choose ",
+    "Nice choice, enjoy your "
+  ];
   String _title = "NoisyBox";
   Color _bgColor = Colors.blueGrey;
   final rnd = Random();
@@ -21,6 +26,9 @@ class HomeboxState extends State<Homebox> {
   void _handleCategory(value) {
     String _category = _categories[value];
     _imageasset = 'lib/images/$_category.png';
+    _title = _preTitle[rnd.nextInt(_preTitle.length)] +
+        _category.toUpperCase() +
+        '!';
     _activeSounds = sounds
         .where((sound) => sound.category.contains(_categories[value]))
         .toList();
@@ -34,50 +42,59 @@ class HomeboxState extends State<Homebox> {
     _assetsAudioPlayer.open(_assetsAudio);
   }
 
-  void _handleSwap(){
+  void _handleSwap() {
     setState(() {
-      _bgColor = Color((rnd.nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(1.0);
+      _bgColor =
+          Color((rnd.nextDouble() * 0xFFFFFF).toInt() << 0).withOpacity(1.0);
       _firstState = !_firstState;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    double _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
-          title: Text(_title)),
-      body: Center(
+      appBar: AppBar(backgroundColor: _bgColor, title: Text(_title)),
+      body: SingleChildScrollView(
           child: AnimatedContainer(
-              height: MediaQuery.of(context).size.height * 2,
+              height: _height * 2,
               padding: EdgeInsets.all(100),
-              duration: Duration(milliseconds: 300),
-              color: _bgColor,
+              duration: Duration(milliseconds: 150),
+              color: _firstState ? Colors.lightBlue : Colors.lightGreenAccent,
               child: AnimatedCrossFade(
                 duration: Duration(milliseconds: 500),
-                crossFadeState: _firstState ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                crossFadeState: _firstState
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
                 firstChild: GestureDetector(
                     child: Image.asset(
-                      _imageasset,
+                      _imageasset,width: _height,
                     ),
                     onTap: () =>
                         _playAudio(_activeSounds[rnd.nextInt(3)].noisepath)),
-              secondChild: Center(
-                child: GridView.builder(
-        itemCount: _categories.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-        itemBuilder: (BuildContext context, index) {
-          return ListTile(title: Image.asset('lib/images/'+_categories[index]+'.png'),
-          onTap: () => _handleCategory(index),
-
-          );
-        },
-      ),
-              ),
+                secondChild: Container(height: _height,
+                  child: GridView.builder(
+                    itemCount: _categories.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10),
+                    itemBuilder: (BuildContext context, index) {
+                      return ListTile(
+                        title: AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          height: _height,
+                          child: Image.asset(
+                              'lib/images/' + _categories[index] + '.png'),
+                        ),
+                        onTap: () => _handleCategory(index),
+                      );
+                    },
+                  ),
+                ),
               ))),
-      floatingActionButton: FloatingActionButton(
-        child: _firstState ? Icon(Icons.open_in_new) : Icon(Icons.backspace),
+      floatingActionButton: FloatingActionButton(backgroundColor: _bgColor,
+        child: _firstState ? Image.asset('lib/images/animals_logo.png') : Icon(Icons.arrow_back_ios),
         onPressed: () => _handleSwap(),
       ),
     );
