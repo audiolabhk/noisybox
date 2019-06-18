@@ -1,4 +1,4 @@
-import 'package:featureful_finder/homebox.dart';
+import 'package:NoisyBox/homebox.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
